@@ -1555,38 +1555,40 @@ static MagickBooleanType FloydSteinbergDither(Image *image,CubeInfo *cube_info,
       ssize_t
         u;
 
+      float amount = 0.35f;
+
       u=(y & 0x01) != 0 ? (ssize_t) image->columns-1-x : x;
       AssociateAlphaPixel(image,&cube,q+u*GetPixelChannels(image),&pixel);
       if (x > 0)
         {
-          pixel.red+=7*current[u-v].red/16;
-          pixel.green+=7*current[u-v].green/16;
-          pixel.blue+=7*current[u-v].blue/16;
+          pixel.red+=amount*7*current[u-v].red/16;
+          pixel.green+=amount*7*current[u-v].green/16;
+          pixel.blue+=amount*7*current[u-v].blue/16;
           if (cube.associate_alpha != MagickFalse)
-            pixel.alpha+=7*current[u-v].alpha/16;
+            pixel.alpha+=amount*7*current[u-v].alpha/16;
         }
       if (y > 0)
         {
           if (x < (ssize_t) (image->columns-1))
             {
-              pixel.red+=previous[u+v].red/16;
-              pixel.green+=previous[u+v].green/16;
-              pixel.blue+=previous[u+v].blue/16;
+              pixel.red+=amount*1*previous[u+v].red/16;
+              pixel.green+=amount*1*previous[u+v].green/16;
+              pixel.blue+=amount*1*previous[u+v].blue/16;
               if (cube.associate_alpha != MagickFalse)
-                pixel.alpha+=previous[u+v].alpha/16;
+                pixel.alpha+=amount*1*previous[u+v].alpha/16;
             }
-          pixel.red+=5*previous[u].red/16;
-          pixel.green+=5*previous[u].green/16;
-          pixel.blue+=5*previous[u].blue/16;
+          pixel.red+=amount*5*previous[u].red/16;
+          pixel.green+=amount*5*previous[u].green/16;
+          pixel.blue+=amount*5*previous[u].blue/16;
           if (cube.associate_alpha != MagickFalse)
-            pixel.alpha+=5*previous[u].alpha/16;
+            pixel.alpha+=amount*5*previous[u].alpha/16;
           if (x > 0)
             {
-              pixel.red+=3*previous[u-v].red/16;
-              pixel.green+=3*previous[u-v].green/16;
-              pixel.blue+=3*previous[u-v].blue/16;
+              pixel.red+=amount*3*previous[u-v].red/16;
+              pixel.green+=amount*3*previous[u-v].green/16;
+              pixel.blue+=amount*3*previous[u-v].blue/16;
               if (cube.associate_alpha != MagickFalse)
-                pixel.alpha+=3*previous[u-v].alpha/16;
+                pixel.alpha+=amount*3*previous[u-v].alpha/16;
             }
         }
       pixel.red=(double) ClampPixel(pixel.red);
